@@ -1,0 +1,20 @@
+:root {
+  --primary-color: #5800ff;
+  --secondary-color: #0096ff;
+}
+
+.no-content {
+  color: var(--secondary-color);
+  text-align: center;
+}
+
+.top-movies {
+  text-align: center;
+  color: var(--secondary-color);
+}
+
+.top-movies-container {
+  justify-content: space-around;
+  width: 60%;
+  display: flex;
+}
