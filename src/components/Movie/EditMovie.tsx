@@ -61,11 +61,7 @@ export const EditMovie: React.FC<Props> = (props: Props) => {
   };
 
   const onSliderChangeHandler = (event: any, value: number | number[]) => {
-    if (Array.isArray(value)) {
-      setValues({ ...values, length: value[0] });
-    } else {
-      setValues({ ...values, length: value });
-    }
+    setValues({ ...values, length: Array.isArray(value) ? value[0] : value });
   };
 
   const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = (
@@ -83,21 +79,13 @@ export const EditMovie: React.FC<Props> = (props: Props) => {
         if (movie.id === props.id) {
           return {
             ...movie,
-            title: values.title,
-            director: values.director,
-            length: values.length,
-            rating: values.rating,
-            is3D: values.is3D,
+            ...values,
           };
         }
         return movie;
       });
       setValues({
-        title: values.title,
-        director: values.director,
-        length: values.length,
-        rating: values.rating,
-        is3D: values.is3D,
+        ...values
       });
       props.onSave(updatedMovies);
     }, 500);

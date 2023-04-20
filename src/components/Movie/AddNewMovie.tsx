@@ -2,6 +2,7 @@ import "./Movie.css";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "../UI/Button";
 import { validate } from "../../helpers/inputValidation";
+import { Movie } from "../../types/MovieType";
 import { useEffect, useState } from "react";
 import {
   Rating,
@@ -13,14 +14,13 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-interface Movie {
-  id: string;
-  title: string;
-  director: string;
-  length: number;
-  rating: number;
-  is3D: string;
-}
+const defaultValues = {
+  title: "",
+  director: "",
+  rating: 3,
+  length: 1,
+  is3D: "3D",
+};
 
 interface Props {
   movies: Movie[];
@@ -44,13 +44,7 @@ export const AddNewMovie: React.FC<Props> = (props: Props) => {
     rating: number;
     length: number;
     is3D: string;
-  }>({
-    title: "",
-    director: "",
-    rating: 3,
-    length: 1,
-    is3D: "3D",
-  });
+  }>(defaultValues);
 
   useEffect(() => {
     setIsValid({
@@ -65,11 +59,7 @@ export const AddNewMovie: React.FC<Props> = (props: Props) => {
   };
 
   const onSliderChangeHandler = (event: any, value: number | number[]) => {
-    if (Array.isArray(value)) {
-      setValues({ ...values, length: value[0] });
-    } else {
-      setValues({ ...values, length: value });
-    }
+    setValues({ ...values, length: Array.isArray(value) ? value[0] : value });
   };
 
   const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = (
@@ -83,11 +73,7 @@ export const AddNewMovie: React.FC<Props> = (props: Props) => {
     setLoading(true);
     const newMovie: Movie = {
       id: uuidv4(),
-      title: values.title,
-      director: values.director,
-      length: values.length,
-      rating: values.rating,
-      is3D: values.is3D,
+      ...values,
     };
     const timer = setTimeout(() => {
       setLoading(false);
@@ -95,7 +81,7 @@ export const AddNewMovie: React.FC<Props> = (props: Props) => {
       props.onNewMovieAdd(newMovie);
     }, 500);
 
-    setValues({ title: "", director: "", rating: 3, length: 1, is3D: "3D" });
+    setValues(defaultValues);
     return () => {
       clearTimeout(timer);
     };

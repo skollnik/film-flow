@@ -3,6 +3,7 @@ import "./Header.css";
 import { useState } from "react";
 import { AddNewMovie } from "../Movie/AddNewMovie";
 import { Button } from "../UI/Button";
+import { Movie } from "../../types/MovieType";
 
 const style = {
   position: "absolute" as "absolute",
@@ -24,15 +25,6 @@ export const Header: React.FC<Props> = (props: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen: () => void = () => setOpen(true);
   const handleClose: () => void = () => setOpen(false);
-
-  interface Movie {
-    id: string;
-    title: string;
-    director: string;
-    length: number;
-    rating: number;
-    is3D: string;
-  }
 
   const handleNewMovie = (movie: any) => {
     props.onNewMovie(movie);
